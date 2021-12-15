@@ -60,5 +60,7 @@ if($null -ne $log4jvulnerablefiles ){
 
 Ninja-Property-Set log4shellScanner $ScanMessage
 
+exit
+
 
 
