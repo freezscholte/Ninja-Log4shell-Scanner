@@ -1,7 +1,8 @@
 #JS
 #V1.2.1 December 15 2021
+#V1.2.2 December 20 - Robocopy Hidden UI + $ErrorActionPreference = "SilentlyContinue"
 #Sources for inspiration -> https://github.com/N-able/ScriptsAndAutomationPolicies/blob/master/Vulnerability%20-%20CVE-2021-44228%20(Log4j)/get-log4jrcevulnerability.ps1
-
+$ErrorActionPreference = "SilentlyContinue"
 $StartTime = Get-Date
 $drives = Get-WmiObject -class “Win32_LogicalDisk" | ?{ @(3) -contains $_.DriveType }
 $drives = $drives.DeviceID
@@ -9,7 +10,7 @@ $drives = $drives.DeviceID
 
 $ScanResults = foreach ($Drive in $drives) {
 
-    $robocopyexitcode = (start-process "robocopy.exe" "$($drive)\ $($drive)\DOESNOTEXIST *.jar /S /XJ /L /FP /NS /NC /NDL /NJH /NJS /r:0 /w:0 /LOG:$env:temp\log4jfilescan.csv" -wait).exitcode
+    $robocopyexitcode = (start-process "robocopy.exe" "$($drive)\ $($drive)\DOESNOTEXIST *.jar /S /XJ /L /FP /NS /NC /NDL /NJH /NJS /r:0 /w:0 /LOG:$env:temp\log4jfilescan.csv" -WindowStyle hidden -wait).exitcode
         if ($? -eq $True) {
             $robocopycsv = $true
             $ScanResult = import-csv "$env:temp\log4jfilescan.csv" -header FilePath -delimiter "|"
